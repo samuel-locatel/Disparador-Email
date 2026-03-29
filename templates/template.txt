@@ -1,0 +1,6 @@
+Olá {{socio_administrador}},
+
+Este é um email enviado para {{email}}.
+
+Atenciosamente,
+Sua Empresa
