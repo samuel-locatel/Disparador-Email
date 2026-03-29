@@ -6,11 +6,11 @@ const { renderTemplate } = require('./src/renderTemplate');
 const { sendEmail } = require('./src/sendEmail');
 
 async function main() {
-  const { RESEND_API_KEY, FROM_EMAIL, EMAIL_SUBJECT } = process.env;
+  const { RESEND_API_KEY, FROM_EMAIL } = process.env;
 
-  if (!RESEND_API_KEY || !FROM_EMAIL || !EMAIL_SUBJECT) {
+  if (!RESEND_API_KEY || !FROM_EMAIL) {
     console.error(
-      'Error: Missing required env variables. Ensure RESEND_API_KEY, FROM_EMAIL, and EMAIL_SUBJECT are set in .env'
+      'Error: Missing required env variables. Ensure RESEND_API_KEY and FROM_EMAIL are set in .env'
     );
     process.exit(1);
   }
@@ -37,8 +37,10 @@ async function main() {
 
   const txtTemplatePath = path.join(__dirname, 'templates', 'template.txt');
   const htmlTemplatePath = path.join(__dirname, 'templates', 'template.html');
+  const subjectTemplatePath = path.join(__dirname, 'templates', 'subject.txt');
 
   const txtTemplate = fs.readFileSync(txtTemplatePath, 'utf-8');
+  const subjectTemplate = fs.readFileSync(subjectTemplatePath, 'utf-8').trim();
   const rawHtml = fs.existsSync(htmlTemplatePath)
     ? fs.readFileSync(htmlTemplatePath, 'utf-8').trim()
     : '';
@@ -59,7 +61,7 @@ async function main() {
 
     const text = renderTemplate(txtTemplate, row);
     const html = rawHtml ? renderTemplate(rawHtml, row) : undefined;
-    const subject = renderTemplate(EMAIL_SUBJECT, row);
+    const subject = renderTemplate(subjectTemplate, row);
 
     try {
       await sendEmail({
