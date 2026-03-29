@@ -1,3 +1,19 @@
 node_modules/
 .env
 *.xlsx
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Editor artifacts
+.vscode/
+.idea/
+*.swp
+
+# Test coverage
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
